@@ -1,0 +1,153 @@
+<%- include('common/header.ejs') %>
+
+<div class="container-fluid p-0 bg_01">
+    <div class="d-flex">
+        <div>
+            <%- include('common/sidebar.ejs') %>
+        </div>
+        <div class="w-100 p-3">
+            <div class="rounded-3 border p-3 bggry">
+                <div class="d-flex justify-content-between border-bottom pb-3">
+                    <div>
+                        <h3>Category</h3>
+                        <div>Manage Product Category in Store</div>
+                    </div>
+                    <div>
+                        <button class="btn border" data-bs-toggle="modal" data-bs-target="#addproduct">+ Add Product</button>
+                    </div>
+                </div>
+
+                <div class="py-3">
+                    <div id="search">
+                        <input type="text" placeholder="Search..." class="form-control w-25" id="search-input">
+                    </div>
+                </div>
+
+                <div class="container-fluid p-0">
+                    <div class="table-responsive border rounded-3">
+                        <table class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Category Name</th>
+                                    <th>Category Image</th>
+                                    <th>Category Description</th>
+                                    <th>Category Secondary Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i = 0; i < category.length; i++) { %>
+                                    <tr class="text-center">
+                                        <td><%= i + 1 %></td>
+                                        <td><%= category[i].product_name %></td>
+                                        <td class="w200"><img src="/static/images/category/pro_category/<%= category[i].product_image %>" width="100px" alt=""></td>
+                                        <td><%= category[i].product_category %></td>
+                                        <td><img src="/static/images/category/pro_category/<%= category[i].sub_product_image %>" alt="" width="130px"></td>
+                                        <td>
+                                            <span><i class="fa fa-solid fa-pen-to-square px-2"></i></span>
+                                            <span><i class="fa fa-solid fa-eye px-2"></i></span>
+                                            <span><i class="fa fa-solid fa-trash px-2"></i></span>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="my-2">
+                        <label for="product_category">Category Name</label>
+                        <input id="product_category" class="form-control" required>
+                    </div>
+                    <div class="my-2">
+                        <label for="product_image">Category Image</label>
+                        <input type="file" id="product_image" class="form-control" accept="image/*" required>
+                    </div>
+                    <div class="my-2">
+                        <label for="sub_product_image">Category Secondary Image</label>
+                        <input type="file" id="sub_product_image" class="form-control" accept="image/*" required>
+                    </div>
+                    <div class="my-2">
+                        <label for="product_name">Category Description</label>
+                        <input type="text" id="product_name" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button id="category_sbbtn" class="btn bg">Add Category</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#category_sbbtn').on('click', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var product_image = $('#product_image')[0].files[0];
+            var sub_product_image = $('#sub_product_image')[0].files[0];
+            var product_category = $('#product_category').val();
+            var product_name = $('#product_name').val();
+
+            if (!product_image || !sub_product_image || !product_category || !product_name) {
+                alert("Please fill all fields");
+                return; // Exit if validation fails
+            }
+
+            var formdata = new FormData();
+            formdata.append('product_category', product_category);
+            formdata.append('product_image', product_image);
+            formdata.append('sub_product_image', sub_product_image);
+            formdata.append('product_name', product_name);
+
+            $.ajax({
+                type: 'POST',
+                url: '/category',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log('Category added:', response);
+                    // Reset the form fields
+                    $('#product_category').val('');
+                    $('#product_image').val('');
+                    $('#sub_product_image').val('');
+                    $('#product_name').val('');
+                    $('#addproduct').modal('hide'); // Close the modal
+                    alert("Category added successfully!");
+                    location.reload(); // Reload the page to see the new category
+                },
+                error: function (error) {
+                    console.error('Error adding category:', error);
+                    alert("Failed to add category. Please try again.");
+                }
+            });
+        });
+
+        // Clear form when modal is closed
+        $('#addproduct').on('hidden.bs.modal', function () {
+            $('#product_category').val('');
+            $('#product_image').val('');
+            $('#sub_product_image').val('');
+            $('#product_name').val('');
+        });
+    });
+</script>
+<%- include('common/footer.ejs') %>

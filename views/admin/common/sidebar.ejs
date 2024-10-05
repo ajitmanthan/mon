@@ -1,0 +1,118 @@
+<link rel="stylesheet" href="/static/css/admin.css">
+
+<div class="sidebar">
+    <div class="sidebar-content">
+        <!-- Dashboard Link -->
+        <div class="p-0 py-2">
+            <a href="/admin" class="">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-address-card"></i></div>
+                    <div class="dash-text">Dashboard</div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Product Link -->
+        <div class="p-0 py-2">
+            <a href="/product">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div class="dash-text">Product</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Banner Link -->
+        <div class="p-0 py-2">
+            <a href="/dashboard_banner">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-regular fa-images"></i></div>
+                    <div class="dash-text">Banner</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- User Link -->
+        <div class="p-0 py-2">
+            <a href="/user">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="dash-text">User</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Carousal Link -->
+        <div class="p-0 py-2">
+            <a href="/carausal_banner">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-photo-film"></i></div>
+                    <div class="dash-text">Carausal</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Category Link -->
+        <div class="p-0 py-2">
+            <a href="/category">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="dash-text">Category</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Product Banner Link -->
+        <div class="p-0 py-2">
+            <a href="/product_banner">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-panorama"></i></div>
+                    <div class="dash-text ws">Product Banner</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Support Link -->
+        <div class="p-0 py-2">
+            <a href="#">
+                <div class="dash-tabs">
+                    <div class="dash-icon"><i class="fa-solid fa-headset"></i></div>
+                    <div class="dash-text">Support</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="bp p-1">
+            <div class="profile w-100">
+                <div class="d-flex" data-toggle="dropdown">
+                    <div class="pro"><i class="fa-solid fa-address-card"></i></div>
+                    <div class="dash-text ms-2">Profile</div>
+                </div>
+                <div class="profile-dropdown d-none">
+                    <div class="ps-2 mt-2">
+                        <a class="dropdown-item d-flex" href="#">
+                            <span class="dash-iconnn"><i class="fa-solid fa-user"></i></span>
+                            <span class="dash-text ps-1">Admin</span>
+                        </a>
+                    </div>
+                    <div class="ps-2">
+                        <a class="dropdown-item d-flex" href="#">
+                            <span class="dash-iconnn"><i class="fa-solid fa-gear"></i></span>
+                            <span class="dash-text ps-1">Setting</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Toggle Profile Dropdown
+        $('.profile').on('click', function () {
+            $('.profile-dropdown').toggleClass('d-none');
+        });
+    });
+</script>

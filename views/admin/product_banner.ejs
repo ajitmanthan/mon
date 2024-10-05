@@ -1,0 +1,281 @@
+
+
+
+
+<%- include('common/header.ejs') %>
+
+<div class="container-fluid p-0 bg_01">
+    <div class="d-flex">
+        <%- include('common/sidebar.ejs') %>
+        <div class="w-100 p-3">
+            <div class="rounded-3 border p-3 bggry">
+                <div class="d-flex justify-content-between border-bottom pb-3">
+                    <div>
+                        <h3>Banner</h3>
+                        <div>Manage Product Banner in Store</div>
+                    </div>
+                    <div>
+                        <button class="btn border" data-bs-toggle="modal" data-bs-target="#addproduct">+ Add Banner</button>
+                    </div>
+                </div>
+                <div class="py-3">
+                    <div id="search">
+                        <input type="text" placeholder="Search..." class="form-control w-25" id="search-input">
+                    </div>
+                </div>
+                <div class="container-fluid p-0">
+                    <div class="table-responsive border rounded-3">
+                        <table class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Category Name</th>
+                                    <th>Category Image</th>
+                                    <th>Category Description</th>
+                                    <th>Category Secondary Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i = 0; i < banner.length; i++) { %>
+                                    <tr class="text-center">
+                                        <td><%= i + 1 %></td>
+                                        <input type="hidden" name="" value="<%= banner[i].banner_id %>">
+                                        <td><%= banner[i].product_title %></td>
+                                        <td><img src="/static/images/category/productbanner/<%= banner[i].product_banner %>" alt="" class="w200"></td>
+                                        <td><%= banner[i].product_category %></td>
+                                        <td><%= banner[i].product_link %></td>
+                                        <td>
+                                            <span><i class="fa fa-solid fa-pen-to-square px-2 edit-btn"></i></span>
+                                            <span><i class="fa fa-solid fa-eye px-2"></i></span>
+                                            <span><i class="fa fa-solid fa-trash px-2 delete-btn"></i></span>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Banner Modal -->
+<div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="addBannerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addBannerLabel">Banner</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="my-2">
+                        <div>Product Banner</div>
+                        <input type="file" name="product_banner" id="product_banner" class="form-control">
+                    </div>
+                    <div class="my-2">
+                        <div>Banner Title</div>
+                        <input type="text" name="product_title" id="product_title" class="form-control">
+                    </div>
+                    <div class="my-2">
+                        <div>Banner Category</div>
+                        <select name="product_category" id="product_category" class="form-control">
+                            <% for (let i = 0; i < category.length; i++) { %>
+                                <option value="<%= category[i].product_category %>">
+                                    <%= category[i].product_category %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="my-2">
+                        <div>Product Link</div>
+                        <input type="text" name="product_link" id="product_link" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="sbbtn" class="btn bg">Add Banner</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Banner Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editBannerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editBannerLabel">Edit Product</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modeledit">
+                <div class="container-fluid">
+                    <div>
+                        <div>Banner ID</div>
+                        <input type="text" id="edit_id" class="form-control" disabled readonly>
+                    </div>
+                    <div>
+                        <div>Banner Image</div>
+                        <input type="text" id="edit_banner" class="form-control" required>
+                        <input type="file" id="product_image_edit" class="d-none form-control" required>
+                    </div>
+                    <div>
+                        <div>Banner Title</div>
+                        <input type="text" id="edit_title" class="form-control" required>
+                    </div>
+                    <div>
+                        <div>Banner Category</div>
+                        <input id="edit_category" class="form-control" readonly disabled>
+                    </div>
+                    <div>
+                        <div>Banner Product Link</div>
+                        <input type="text" id="edit_link" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="edit_bnnnnnn" class="btn bcolor">Update Banner</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    // Add Banner
+    $('#sbbtn').on('click', function () {
+        const randomId = `banner_${Math.floor(Math.random() * 1000)}`;
+        const productBanner = $('#product_banner')[0].files[0];
+        const productTitle = $('#product_title').val();
+        const productCategory = $('#product_category').val();
+        const productLink = $('#product_link').val();
+
+        const formData = new FormData();
+        formData.append('product_banner', productBanner);
+        formData.append('banner_id', randomId);
+        formData.append('product_title', productTitle);
+        formData.append('product_category', productCategory);
+        formData.append('product_link', productLink);
+
+        $.ajax({
+            type: 'post',
+            url: '/product_bann',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.msg === 'ok') {
+                    window.location.reload();
+                }
+            },
+            error: function (err) {
+                console.error('Error adding banner:', err);
+            }
+        });
+    });
+
+    // Edit Banner
+    $(document).on('click', '.edit-btn', function () {
+        const trow = $(this).closest('tr');
+        const bannerId = trow.find('input[type="hidden"]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/edit_banner',
+            data: { product_id: bannerId },
+            success: function (response) {
+                $('#edit_id').val(response.product[0].banner_id);
+                $('#edit_category').val(response.product[0].product_category);
+                $('#edit_banner').val(response.product[0].product_banner);
+                $('#edit_title').val(response.product[0].product_title);
+                $('#edit_link').val(response.product[0].product_link);
+                $('#editModal').modal('show');
+            },
+            error: function (err) {
+                console.error('Error fetching banner details:', err);
+            }
+        });
+    });
+
+    // Update Banner
+    $(document).on('click', '#edit_bnnnnnn', function () {
+        const productBanner = $('#product_image_edit')[0].files[0];
+        const bannerId = $('#edit_id').val();
+        const productTitle = $('#edit_title').val();
+        const productCategory = $('#edit_category').val();
+        const productLink = $('#edit_link').val();
+
+        const formData = new FormData();
+        formData.append('product_banner', productBanner);
+        formData.append('banner_id', bannerId);
+        formData.append('product_title', productTitle);
+        formData.append('product_category', productCategory);
+        formData.append('product_link', productLink);
+
+        $.ajax({
+            type: 'POST',
+            url: '/update_bnnn',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                alert('Banner updated successfully');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            },
+            error: function (error) {
+                console.error('Error updating banner:', error);
+            }
+        });
+    });
+
+    // Delete Banner
+    $(document).on('click', '.delete-btn', function () {
+        const trow = $(this).closest('tr');
+        const bannerId = trow.find('input[type="hidden"]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/delete_pbanner',
+            data: { banner_id: bannerId },
+            success: function (response) {
+                alert('Banner deleted successfully');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            },
+            error: function (err) {
+                console.error('Error deleting banner:', err);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('common/footer.ejs') %>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/cdn/fontawsome.min.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+
+<body>
+
+    <%- include('common/header.ejs') %>
+    <div class="container-fluid p-0">
+        <div class="d-flex">
+            <nav>
+                <%- include('common/sidebar.ejs') %>
+            </nav>
+            <main class="w-100 p-2 side-body bbb">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-3 mb-3 mb-sm-0 p-2">
+                            <div class="card card_bg">
+                                <div class="card-body d-flex">
+                                    <div>
+                                        <h4 class="card-title">28,545<span class="text-success h6 ms-2"><i
+                                                    class="fa-solid fa-arrow-up text"></i> 11%</span>
+                                        </h4>
+                                        <h5 class="card-text">Total Orders</h5>
+                                    </div>
+                                    <div class="ms-auto icon_bg">
+                                        <i class="fa-solid fa-cart-shopping text-light fs-3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0 p-2">
+                            <div class="card card_bg">
+                                <div class="card-body d-flex">
+                                    <div>
+                                        <h4 class="card-title">25,079<span class="text-success h6 ms-2"><i
+                                                    class="fa-solid fa-arrow-up text"></i> 33%</span>
+                                        </h4>
+                                        <h5 class="card-text">Total Sales</h5>
+                                    </div>
+                                    <div class="ms-auto icon_bg">
+                                        <i class="fa-solid fa-bag-shopping text-light fs-3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0 p-2">
+                            <div class="card card_bg">
+                                <div class="card-body d-flex">
+                                    <div>
+                                        <h4 class="card-title">$14,834<span class="text-success h6 ms-2"><i
+                                                    class="fa-solid fa-arrow-up text"></i> 11%</span>
+                                        </h4>
+                                        <h5 class="card-text">Total Profit</h5>
+                                    </div>
+                                    <div class="ms-auto icon_bg">
+                                        <i class="fa-solid fa-sack-dollar text-light fs-3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-0 p-2">
+                            <div class="card card_bg">
+                                <div class="card-body d-flex">
+                                    <div>
+                                        <h4 class="card-title">67,542<span class="text-success h6 ms-2"><i
+                                                    class="fa-solid fa-arrow-up text"></i> 47.5%</span>
+                                        </h4>
+                                        <h5 class="card-text">Total Visits</h5>
+                                    </div>
+                                    <div class="ms-auto icon_bg">
+                                        <i class="fa-solid fa-person-circle-plus text-light fs-3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid bg_01 my-3">
+                        <div class="row bggry rounded-3">
+                            <div class="col-9 p-2">
+                                <div class="chart">
+                                    <canvas id="myChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-3 p-2">
+                                <div>
+                                    <div class="h4 text-light">Recent Visits</div>
+                                    <hr>
+                                </div>
+                                <div class="acc_h">
+                                    <% for (let i = 0; i < user.length; i++) { %>
+                                        <div class="d-flex px-4 card_bgg rounded-3 py-3 my-3">
+                                            <div class="w-25">
+                                                <img src="/static/images/category/profile/<%= user[i].user_profile %>" alt=""
+                                                    class="acc">
+                                            </div>
+                                            <div class="w-75 text-center text-light">
+                                                <div><%= user[i].user_email %></div>
+                                                <div>@Zorogod</div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid bg_01">
+                        <div class="row">
+                            <div class="col-4 p-2">
+                                <div class="card js align-center">
+                                    <div class="circle">
+                                        <div class="bar"></div>
+                                        <div class="box"><span></span></div>
+                                    </div>
+                                    <div class="text py-3">New Users</div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-2">
+                                <div class="card node align-center">
+                                    <div class="circle">
+                                        <div class="bar"></div>
+                                        <div class="box"><span></span></div>
+                                    </div>
+                                    <div class="text py-3">Sales</div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-2">
+                                <div class="card react align-center">
+                                    <div class="circle">
+                                        <div class="bar"></div>
+                                        <div class="box"><span></span></div>
+                                    </div>
+                                    <div class="text py-3">Orders</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/cdn/jquery-3.6.0.min.js"></script>
+    <script src="/static/cdn/chart.js"></script>
+    <script>
+        $(document).ready(function () {
+            let options = {
+                startAngle: -1.55,
+                size: 150,
+                value: 0.75,
+                fill: { gradient: ['#15e003', '#02be0c'] }
+            }
+            $(".circle .bar").circleProgress(options).on('circle-animation-progress',
+                function (event, progress, stepValue) {
+                    $(this).parent().find("span").text(String(stepValue.toFixed(2).substr(2)) + "%");
+                });
+            $(".js .bar").circleProgress({ value: 0.70 });
+            $(".node .bar").circleProgress({ value: 0.90 });
+            $(".react .bar").circleProgress({ value: 0.60 });
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Jun 2016", "Jul 2016", "Aug 2016", "Sep 2016", "Oct 2016", "Nov 2016", "Dec 2016", "Jan 2017", "Feb 2017", "Mar 2017", "Apr 2017", "May 2017"],
+                    datasets: [{
+                        label: "Rainfall",
+                        backgroundColor: '#135211',
+                        borderColor: 'rgb(0, 209, 63)',
+                        data: [26.4, 39.8, 66.8, 66.4, 40.6, 55.2, 77.4, 69.8, 57.8, 76, 110.8, 142.6],
+                    }]
+                },
+                options: {
+                    layout: { padding: 10 },
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Precipitation in Toronto' },
+                    scales: {
+                        yAxes: [{ scaleLabel: { display: true, labelString: 'Precipitation in mm' } }],
+                        xAxes: [{ scaleLabel: { display: true, labelString: 'Month of the Year' } }]
+                    }
+                }
+            });
+        });
+    </script>
+    <%- include('common/footer.ejs') %>
+</body>
+
+</html>

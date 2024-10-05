@@ -1,0 +1,74 @@
+<head>
+    <link rel="stylesheet" href="/static/cdn/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/cdn/fontawsome.min.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <script src="/static/cdn/jquery-3.6.0.min.js"></script>
+</head>
+<%- include('../common/header.ejs') %>  
+<body class="log_page">
+
+    <div class="signin">
+        <div class="content">
+            <h2 class="text-light">Log In</h2>
+            <div class="form">
+                <div class="inputBox">
+                    <input type="text" id="user_email" required>
+                    <label for="user_email">User Email</label>
+                </div>
+                <div class="inputBox">
+                    <input type="password" id="user_pass" required>
+                    <label for="user_pass">Password</label>
+                </div>
+                <div class="links">
+                    <a href="#">Forgot Password</a>
+                    <a href="/signup">Signup</a>
+                </div>
+                <div class="inputBox">
+                    <input type="submit" id="sbbtn" value="SUBMIT">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/cdn/bootstrap.bundle.min.js"></script>
+    <script src="/static/cdn/popper.min.js"></script>
+    <script src="/static/cdn/fontawesome.all.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#sbbtn').on('click', function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                var user_email = $('#user_email').val();
+                var user_pass = $('#user_pass').val();
+
+                if (user_email === "" || user_pass === "") {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: { user_email: user_email, user_pass: user_pass },
+                    success: function (response) {
+                        let user_type = response.user_role;
+                        console.log(user_type);
+                        if (user_type === 'user') {
+                            window.location.href = '/';
+                        } else if (user_type === 'admin') {
+                            window.location.href = '/admin';
+                        } else {
+                            alert('Wrong Credentials');
+                            window.location.reload();
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while processing your request. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>

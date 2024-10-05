@@ -1,0 +1,128 @@
+<%- include('common/header.ejs') %>
+
+<div class="container-fluid p-0 bg_01">
+    <div class="d-flex">
+        <%- include('common/sidebar.ejs') %>
+        <div class="w-100 p-3">
+            <div class="rounded-3 border p-3 bggry">
+                <div class="d-flex justify-content-between border-bottom pb-3">
+                    <div>
+                        <h3>Category</h3>
+                        <div>Manage Users in Store</div>
+                    </div>
+                    <div>
+                        <button class="btn border" data-bs-toggle="modal" data-bs-target="#addproduct">+ Add Product</button>
+                    </div>
+                </div>
+
+                <div class="py-3">
+                    <div id="search">
+                        <input type="text" placeholder="Search..." class="form-control w-25" id="search-input">
+                    </div>
+                </div>
+
+                <div class="container-fluid p-0">
+                    <div class="table-responsive border rounded-3">
+                        <table class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>User Email</th>
+                                    <th>User Image</th>
+                                    <th>Password</th>
+                                    <th>User Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i = 0; i < user.length; i++) { %>
+                                <tr class="text-center">
+                                    <td><%= i + 1 %></td>
+                                    <td><%= user[i].user_email %></td>
+                                    <td>
+                                        <img src="/static/images/category/pro_category/<%= user[i].user_profile %>" alt="" class="img-fluid w-25">
+                                    </td>
+                                    <td><%= user[i].user_pass %></td>
+                                    <td><%= user[i].user_role %></td>
+                                    <td>
+                                        <span><i class="fa fa-solid fa-pen-to-square px-2"></i></span>
+                                        <span><i class="fa fa-solid fa-eye px-2"></i></span>
+                                        <span><i class="fa fa-solid fa-trash px-2"></i></span>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="my-2">
+                        <div>Category Name</div>
+                        <input id="product_category" class="form-control" placeholder="Enter category name">
+                    </div>
+                    <div class="my-2">
+                        <div>Category Image</div>
+                        <input type="file" id="product_image" class="form-control">
+                    </div>
+                    <div class="my-2">
+                        <div>Category Secondary Image</div>
+                        <input type="file" id="sub_product_image" class="form-control">
+                    </div>
+                    <div class="my-2">
+                        <div>Category Description</div>
+                        <input type="text" id="product_name" class="form-control" placeholder="Enter description">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" id="category_sbbtn" class="btn bg">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('#category_sbbtn').on('click', function(){
+        var product_image = $('#product_image')[0].files[0];
+        var sub_product_image = $('#sub_product_image')[0].files[0];
+        var product_category = $('#product_category').val();
+        var product_name = $('#product_name').val();
+        var formdata = new FormData();
+        
+        formdata.append('product_category', product_category);
+        formdata.append('product_image', product_image);
+        formdata.append('sub_product_image', sub_product_image);
+        formdata.append('product_name', product_name);
+        
+        $.ajax({
+            type: 'POST',
+            url: '/category',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                console.log('Category added');
+                // Add logic for success handling
+            }
+        });
+    });
+});
+</script>
+
+<%- include('common/footer.ejs') %>
